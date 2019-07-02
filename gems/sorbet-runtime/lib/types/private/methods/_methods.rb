@@ -6,11 +6,33 @@ module T::Private::Methods
   @signatures_by_method = {}
   @sig_wrappers = {}
   @sigs_that_raised = {}
+  # the info about whether a method is final is not stored in a DeclBuilder nor a Signature, but instead right here.
+  # this is because final checks are special:
+  # - they are done possibly before any sig block has run.
+  # - they are done even if the method being defined doesn't have a sig.
+  @final_methods = Set.new
 
   ARG_NOT_PROVIDED = Object.new
   PROC_TYPE = Object.new
 
-  DeclarationBlock = Struct.new(:mod, :loc, :blk)
+  class DeclarationBlock
+    attr_accessor :mod, :loc, :blk
+
+    def initialize(mod, loc, blk)
+      @mod = mod
+      @loc = loc
+      @blk = blk
+      @final = false
+    end
+
+    def final
+      @final = true
+    end
+
+    def final?
+      @final
+    end
+  end
 
   def self.declare_sig(mod, &blk)
     install_hooks(mod)
@@ -22,9 +44,10 @@ module T::Private::Methods
 
     loc = caller_locations(2, 1).first
 
-    T::Private::DeclState.current.active_declaration = DeclarationBlock.new(mod, loc, blk)
+    db = DeclarationBlock.new(mod, loc, blk)
+    T::Private::DeclState.current.active_declaration = db
 
-    nil
+    db
   end
 
   def self.start_proc
@@ -109,11 +132,22 @@ module T::Private::Methods
   # Only public because it needs to get called below inside the replace_method blocks below.
   def self._on_method_added(hook_mod, method_name, is_singleton_method: false)
     current_declaration = T::Private::DeclState.current.active_declaration
-    return if current_declaration.nil?
-    T::Private::DeclState.current.reset!
-
     mod = is_singleton_method ? hook_mod.singleton_class : hook_mod
     original_method = mod.instance_method(method_name)
+
+    if final_method?(original_method)
+      raise "`#{mod.name}##{method_name}` was declared as final and cannot be redefined"
+    end
+    mod.ancestors.each do |a|
+      (a.instance_methods(false) + a.private_instance_methods(false)).each do |m|
+        if m == method_name && final_method?(a.instance_method(method_name))
+          raise "`#{a.name}##{method_name}` was declared as final and cannot be overridden in `#{mod.name}`"
+        end
+      end
+    end
+
+    return if current_declaration.nil?
+    T::Private::DeclState.current.reset!
 
     sig_block = lambda do
       T::Private::Methods.run_sig(hook_mod, method_name, original_method, current_declaration)
@@ -161,7 +195,11 @@ module T::Private::Methods
     end
 
     new_method = mod.instance_method(method_name)
-    @sig_wrappers[method_to_key(new_method)] = sig_block
+    key = method_to_key(new_method)
+    @sig_wrappers[key] = sig_block
+    if current_declaration.final?
+      @final_methods.add(key)
+    end
   end
 
   def self.sig_error(loc, message)
@@ -250,6 +288,10 @@ module T::Private::Methods
 
   def self.has_sig_block_for_method(method)
     has_sig_block_for_key(method_to_key(method))
+  end
+
+  private_class_method def self.final_method?(method)
+    @final_methods.include?(method_to_key(method))
   end
 
   private_class_method def self.has_sig_block_for_key(key)
