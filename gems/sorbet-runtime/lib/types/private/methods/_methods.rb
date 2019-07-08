@@ -138,10 +138,10 @@ module T::Private::Methods
     if final_method?(original_method)
       raise "`#{mod.name}##{method_name}` was declared as final and cannot be redefined"
     end
-    mod.ancestors.each do |a|
-      (a.instance_methods(false) + a.private_instance_methods(false)).each do |m|
-        if m == method_name && final_method?(a.instance_method(method_name))
-          raise "`#{a.name}##{method_name}` was declared as final and cannot be overridden in `#{mod.name}`"
+    mod.ancestors.each do |ancestor|
+      (ancestor.instance_methods(false) + ancestor.private_instance_methods(false)).each do |ancestor_method|
+        if ancestor_method == method_name && final_method?(ancestor.instance_method(method_name))
+          raise "`#{ancestor.name}##{method_name}` was declared as final and cannot be overridden in `#{mod.name}`"
         end
       end
     end
