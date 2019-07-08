@@ -95,7 +95,7 @@ subgraph "cluster_::<Class:Funcs>#<static-init>" {
     "bb::<Class:Funcs>#<static-init>_2" -> "bb::<Class:Funcs>#<static-init>_3" [style="tapered"];
 
     "bb::<Class:Funcs>#<static-init>_3" [
-        label = "block[id=3](<selfRestore>$6: T.class_of(Funcs))\l<statTemp>$3: Sorbet::Private::Static::Void = Solve<sig>\l<self>: T.class_of(Funcs) = <selfRestore>$6\l<statTemp>$20: Symbol(:\"f\") = :\"f\"\l<statTemp>$18: T.class_of(Funcs) = <self>: T.class_of(Funcs).module_function(<statTemp>$20: Symbol(:\"f\"))\l<block-pre-call-temp>$23: Sorbet::Private::Static::Void = <self>: T.class_of(Funcs).sig()\l<selfRestore>$24: T.class_of(Funcs) = <self>\l<unconditional>\l"
+        label = "block[id=3](<selfRestore>$6: T.class_of(Funcs))\l<statTemp>$3: T::Private::Methods::DeclarationBlock = Solve<sig>\l<self>: T.class_of(Funcs) = <selfRestore>$6\l<statTemp>$20: Symbol(:\"f\") = :\"f\"\l<statTemp>$18: T.class_of(Funcs) = <self>: T.class_of(Funcs).module_function(<statTemp>$20: Symbol(:\"f\"))\l<block-pre-call-temp>$23: Sorbet::Private::Static::Void = <self>: T.class_of(Funcs).sig()\l<selfRestore>$24: T.class_of(Funcs) = <self>\l<unconditional>\l"
     ];
 
     "bb::<Class:Funcs>#<static-init>_3" -> "bb::<Class:Funcs>#<static-init>_6" [style="bold"];
@@ -112,7 +112,7 @@ subgraph "cluster_::<Class:Funcs>#<static-init>" {
     "bb::<Class:Funcs>#<static-init>_6" -> "bb::<Class:Funcs>#<static-init>_7" [style="tapered"];
 
     "bb::<Class:Funcs>#<static-init>_7" [
-        label = "block[id=7](<selfRestore>$24: T.class_of(Funcs))\l<statTemp>$21: Sorbet::Private::Static::Void = Solve<sig>\l<self>: T.class_of(Funcs) = <selfRestore>$24\l<statTemp>$36: T.class_of(Funcs) = <self>: T.class_of(Funcs).module_function()\l<block-pre-call-temp>$40: Sorbet::Private::Static::Void = <self>: T.class_of(Funcs).sig()\l<selfRestore>$41: T.class_of(Funcs) = <self>\l<unconditional>\l"
+        label = "block[id=7](<selfRestore>$24: T.class_of(Funcs))\l<statTemp>$21: T::Private::Methods::DeclarationBlock = Solve<sig>\l<self>: T.class_of(Funcs) = <selfRestore>$24\l<statTemp>$36: T.class_of(Funcs) = <self>: T.class_of(Funcs).module_function()\l<block-pre-call-temp>$40: Sorbet::Private::Static::Void = <self>: T.class_of(Funcs).sig()\l<selfRestore>$41: T.class_of(Funcs) = <self>\l<unconditional>\l"
     ];
 
     "bb::<Class:Funcs>#<static-init>_7" -> "bb::<Class:Funcs>#<static-init>_10" [style="bold"];
@@ -129,7 +129,7 @@ subgraph "cluster_::<Class:Funcs>#<static-init>" {
     "bb::<Class:Funcs>#<static-init>_10" -> "bb::<Class:Funcs>#<static-init>_11" [style="tapered"];
 
     "bb::<Class:Funcs>#<static-init>_11" [
-        label = "block[id=11](<selfRestore>$41: T.class_of(Funcs))\l<statTemp>$38: Sorbet::Private::Static::Void = Solve<sig>\l<finalReturn>: T.noreturn = return <returnMethodTemp>$2: NilClass\l<unconditional>\l"
+        label = "block[id=11](<selfRestore>$41: T.class_of(Funcs))\l<statTemp>$38: T::Private::Methods::DeclarationBlock = Solve<sig>\l<finalReturn>: T.noreturn = return <returnMethodTemp>$2: NilClass\l<unconditional>\l"
     ];
 
     "bb::<Class:Funcs>#<static-init>_11" -> "bb::<Class:Funcs>#<static-init>_1" [style="bold"];

@@ -608,7 +608,7 @@
       "unique_name": "\u003creturnMethodTemp\u003e$2",
       "type": {
        "kind": "CLASS",
-       "class_full_name": "Sorbet::Private::Static::Void"
+       "class_full_name": "T::Private::Methods::DeclarationBlock"
       }
      },
      "instruction": {},
@@ -640,7 +640,7 @@
        "unique_name": "\u003creturnMethodTemp\u003e$2",
        "type": {
         "kind": "CLASS",
-        "class_full_name": "Sorbet::Private::Static::Void"
+        "class_full_name": "T::Private::Methods::DeclarationBlock"
        }
       }
      },
